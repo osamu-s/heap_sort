@@ -14,27 +14,29 @@ class Heapq():
         return (i+1)*2
 
     def __heapify(self, i, i_v):
-        _cmp =  self.__right(i) - len(self.hq)
-        if _cmp > 0:
-            self.hq[i] = i_v
-            return
+        qlen = len(self.hq)
+        _cmp =  self.__right(i) - qlen
+        while _cmp <= 0:
+            if _cmp == 0:
+                l = self.__left(i)
+                l_v = self.hq[l]
+                if l_v < i_v:
+                    self.hq[i] = l_v
+                    i = l
+                break
 
-        if _cmp == 0:
-            l = self.__left(i)
-            if self.hq[l] < i_v:
-                self.hq[i], self.hq[l] = self.hq[l], i_v
-            else:
-                self.hq[i] = i_v
-            return
+            # case of _cmp < 0
+            idx = [self.__left(i), self.__right(i)]
+            s_v, s = min([ (self.hq[x], x) for x in idx ] + [(i_v, i)])
+            if s == i:
+                break
 
-        # case of _cmp < 0
-        idx = [self.__left(i), self.__right(i)]
-        s_v, s = min([ (self.hq[x], x) for x in idx ] + [(i_v, i)])
-        if s == i:
-            self.hq[i] = i_v
-            return
-        self.hq[i] = s_v
-        self.__heapify(s, i_v)
+            self.hq[i] = s_v
+            i = s
+            _cmp =  self.__right(i) - qlen
+
+        self.hq[i] = i_v
+        return
 
 
     def pop(self):
