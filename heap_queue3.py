@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-class Heapq():
+class Heapq(object):
     def __init__(self):
         self.hq = list()
 
